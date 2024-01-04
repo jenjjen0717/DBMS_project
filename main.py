@@ -133,7 +133,7 @@ def table():
             import_file.save(os.path.join(f"{temp_dir}", import_file.filename))
             fileName = import_file.filename
             new_data = []
-            with open(f"{temp_dir}/{fileName}", "r") as file:
+            with open(f"{temp_dir}/{fileName}", "r", encoding="utf-8") as file:
                 for i in csv.reader(file):
                     new_data.append(i)
             data = []
