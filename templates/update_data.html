@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block title %} Update Data {% endblock %} {% block
+content %}
+<div class="body">
+  <div class="content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index">Index</a></li>
+        <li class="breadcrumb-item">
+          <a href="/database?db={{db}}">{{db}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{table}}</li>
+      </ol>
+    </nav>
+    <h1
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      {{table}} | {{db}}
+    </h1>
+    <span class="badge rounded-pill bg-success">Original Data</span>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          {% for i in column_headers: %}
+          <th scope="col">{{i}}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="align-middle">
+          {% for i in data: %}
+          <td>{{i}}</td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+    <span class="badge rounded-pill bg-danger">New Data</span>
+
+    <form action="" method="POST">
+      {% for i in range(column_headers|length): %}
+      <div class="input-group mb-3">
+        <span
+          class="input-group-text"
+          id="basic-addon3"
+          style="width: 100px; overflow: hidden"
+          >{{column_headers[i]}}</span
+        >
+        <input
+          type="text"
+          class="form-control"
+          name="column_data"
+          value="{{data[i]}}"
+          aria-describedby="basic-addon3"
+        />
+      </div>
+      {% endfor %}
+      <div class="btn-group mb-4" aria-label="Basic example">
+        <a
+          type="button"
+          class="btn btn-danger"
+          href="/table?db={{db}}&table={{table}}"
+          >Cancel</a
+        >
+        <input type="submit" class="btn btn-outline-primary" value="Add" />
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

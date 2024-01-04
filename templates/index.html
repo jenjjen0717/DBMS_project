@@ -1,0 +1,157 @@
+{% extends "base.html" %} {% block title %} Homepage {% endblock %} {% block
+content %}
+<div class="body">
+  <div class="content">
+    <h1
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      Index
+      <div class="search">
+        <a
+          style="
+            display: flex;
+            align-items: flex-end;
+            text-decoration: none;
+            height: 100%;
+            font-size: 2rem;
+          "
+          data-bs-toggle="collapse"
+          href="#search_collapse"
+          role="button"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+          ><i class="bx bx-search"></i
+        ></a>
+      </div>
+    </h1>
+
+    <div class="collapse" id="search_collapse">
+      <div class="card card-body">
+        <form class="row" action="/index" method="GET">
+          <div class="col-auto">
+            <label for="search_content" class="visually-hidden">Search</label>
+            <input
+              type="text"
+              class="form-control"
+              id="search_content"
+              placeholder="Search"
+              name="search_query"
+            />
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <form action="" method="POST">
+      <div class="form-floating mb-3" style="display: flex; gap: 1rem">
+        <input
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          placeholder="database name"
+          name="dbName"
+          required
+        />
+        <label for="floatingInput">建立新資料庫</label>
+        <input class="btn btn-primary" type="submit" value="Create" />
+      </div>
+    </form>
+
+    <div role="tabpanel" class="row m-1">
+      <!-- List group -->
+      <div class="list-group col-4" id="myList" role="tablist">
+        {% for i in DB: %}
+        <div
+          class="list-group-item"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          {% if search_query: %}
+          <a
+            href="/index?search_query={{search_query}}&dbName={{i}}"
+            style="text-decoration: none"
+            class="db_name_box"
+          >
+            {{i}}
+          </a>
+          {% else: %}
+          <a
+            href="/index?dbName={{i}}"
+            style="text-decoration: none"
+            class="db_name_box"
+          >
+            {{i}}
+          </a>
+          {% endif %}
+
+          <div class="btn-box">
+            <a
+              class="deleteBtn btn"
+              href=""
+              data-bs-toggle="modal"
+              data-bs-target="#delModal_{{i}}"
+              ><i class="bx bxs-trash"></i
+            ></a>
+            <a class="viewBtn btn" href="/database?db={{i}}"
+              ><i class="bx bx-right-arrow-circle"></i
+            ></a>
+          </div>
+        </div>
+        <div
+          class="modal fade"
+          id="delModal_{{i}}"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  確定要刪除資料庫 {{i}}?
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <a
+                  type="button"
+                  class="btn btn-danger"
+                  href="/deleteDB?dbName={{i}}"
+                  >DELETE</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Tab panes -->
+      <div class="list-group list-group-flush col-8">
+        {% for i in db_table: %}
+        <div class="list-group-item">{{i}}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{url_for('static', filename='js/index.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,11 @@
+.import-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bxs-trash {
+  &:hover {
+    color: red;
+  }
+}

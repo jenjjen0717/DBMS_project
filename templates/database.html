@@ -1,0 +1,160 @@
+{% extends "base.html" %} {% block title %} Database | {{db}} {% endblock %} {%
+block content %}
+<div class="body">
+  <div class="content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index">Index</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{db}}</li>
+      </ol>
+    </nav>
+
+    <h1
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      資料庫：{{db}}
+      <div class="tool" style="display: flex; gap: 1rem; height: 100%">
+        <div class="search">
+          <a
+            style="
+              display: flex;
+              align-items: flex-end;
+              text-decoration: none;
+              height: 100%;
+              font-size: 2rem;
+            "
+            data-bs-toggle="collapse"
+            href="#search_collapse"
+            role="button"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+            ><i class="bx bx-search"></i
+          ></a>
+        </div>
+        <a href="/createTable?db={{db}}" style="text-decoration: none"
+          ><i
+            class="bx bx-plus-circle"
+            style="display: flex; align-items: center"
+          ></i
+        ></a>
+      </div>
+    </h1>
+    <!--<form class="create_table mb-2" action="" method="POST">
+      <div class="form-floating table_name">
+        <input
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          placeholder="table name"
+          name="table_name"
+        />
+        <label for="floatingInput">建立新資料表</label>
+      </div>
+      <div class="form-floating table_column">
+        <input
+          type="number"
+          class="form-control"
+          id="floatingInput"
+          placeholder="column"
+          name="table_column"
+        />
+        <label for="floatingInput">欄位</label>
+      </div>
+      <input class="btn btn-primary" type="submit" value="Create" />
+    </form>-->
+
+    <div class="collapse" id="search_collapse">
+      <div class="card card-body">
+        <form class="row" action="" method="POST">
+          <div class="col-10">
+            <label for="search_content" class="visually-hidden">Search</label>
+            <input
+              type="text"
+              class="form-control"
+              id="search_content"
+              placeholder="Search"
+              name="search_query"
+            />
+          </div>
+          <div class="col-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="list-group" id="myList" role="tablist">
+      {% for i in table: %}
+      <div
+        class="list-group-item"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <a
+          href="/table?db={{db}}&table={{i}}"
+          style="text-decoration: none"
+          class="db_name_box"
+        >
+          {{i}}
+        </a>
+
+        <div class="btn-box">
+          <a
+            class="deleteBtn btn"
+            href=""
+            data-bs-toggle="modal"
+            data-bs-target="#delModal_{{i}}"
+            ><i class="bx bxs-trash"></i
+          ></a>
+          <a class="viewBtn btn" href="/table?db={{db}}&table={{i}}"
+            ><i class="bx bx-right-arrow-circle"></i
+          ></a>
+        </div>
+      </div>
+      <div
+        class="modal fade"
+        id="delModal_{{i}}"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                確定要刪除資料表 {{i}}?
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <a
+                type="button"
+                class="btn btn-danger"
+                href="/deleteTable?db={{db}}&table={{i}}"
+                >DELETE</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock%}

@@ -1,0 +1,217 @@
+{% extends "base.html" %} {% block title %} {{table}} | {{db}} {% endblock %} {%
+block content %}
+<div class="body">
+  <div class="content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index">Index</a></li>
+        <li class="breadcrumb-item">
+          <a href="/database?db={{db}}">{{db}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{table}}</li>
+      </ol>
+    </nav>
+    <h1
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      {{table}} | {{db}}
+      <div class="tool" style="display: flex; gap: 1rem; height: 100%">
+        <div class="search">
+          <a
+            style="
+              display: flex;
+              align-items: flex-end;
+              text-decoration: none;
+              height: 100%;
+              font-size: 2rem;
+            "
+            data-bs-toggle="collapse"
+            href="#search_collapse"
+            role="button"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+            ><i class="bx bx-search"></i
+          ></a>
+        </div>
+        <div class="dropdown">
+          {# dropdown #}
+          <a
+            class="btn btn-primary dropdown-toggle"
+            href="#"
+            role="button"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            新增
+          </a>
+          {# dropdown content #}
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li>
+              <a
+                class="dropdown-item"
+                href="/table?db={{db}}&table={{table}}&form_active=true"
+                >Manual</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                href="/table?db={{db}}&table={{table}}&import=true"
+                >Import</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </h1>
+
+    <div class="collapse" id="search_collapse">
+      <div class="card card-body">
+        <form class="row" action="" method="POST">
+          <div class="col-10">
+            <label for="search_content" class="visually-hidden">Search</label>
+            <input
+              type="text"
+              class="form-control"
+              id="search_content"
+              placeholder="Search"
+              name="search_query"
+            />
+          </div>
+          <div class="col-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {# add data form #} {% if form_active: %}
+    <form action="" method="POST">
+      {% for i in range(column_headers|length): %}
+      <div class="input-group mb-3">
+        <span
+          class="input-group-text"
+          id="basic-addon3"
+          style="width: 100px; overflow: hidden"
+          >{{column_headers[i]}}</span
+        >
+        <input
+          type="text"
+          class="form-control"
+          name="column_data"
+          aria-describedby="basic-addon3"
+        />
+      </div>
+      {% endfor %}
+      <div class="btn-group mb-4" aria-label="Basic example">
+        <a
+          type="button"
+          class="btn btn-danger"
+          href="/table?db={{db}}&table={{table}}"
+          >Cancel</a
+        >
+        <input type="submit" class="btn btn-outline-primary" value="Add" />
+      </div>
+    </form>
+    {% endif %} {# data from #} {% if import_form: %}
+    <form action="" method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="formFile" class="form-label">匯入資料</label>
+        <input
+          class="form-control col-8 mb-3"
+          type="file"
+          name="import_file"
+          id="formFile"
+          required
+        />
+        <div class="btn-group mb-4" aria-label="Basic example">
+          <a
+            type="button"
+            class="btn btn-danger"
+            href="/table?db={{db}}&table={{table}}"
+            >Cancel</a
+          >
+          <input type="submit" class="btn btn-outline-primary" value="Add" />
+        </div>
+      </div>
+    </form>
+    {% endif %} {# show data of the table #}
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          {% for i in column_headers: %}
+          <th scope="col">{{i}}</th>
+          {% endfor %}
+          <th style="width: 75px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in data: %}
+        <tr class="align-middle">
+          <th scope="row">{{ data.index(i) + 1 }}</th>
+          {% for j in i: %}
+          <td>{{j}}</td>
+          {% endfor %}
+          <td class="align-middle">
+            <div
+              class="box"
+              style="width: 100%; display: flex; justify-content: space-around"
+            >
+              <a href="{{ url_for('updateData',db= db, table=table, data = i)}}"
+                ><i class="bx bxs-edit-alt"></i
+              ></a>
+              <a
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#delModal_{{data.index(i)+1}}"
+                ><i class="bx bxs-trash"></i
+              ></a>
+            </div>
+          </td>
+        </tr>
+        <div
+          class="modal fade"
+          id="delModal_{{data.index(i)+1}}"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  確定要刪除{{i}}?
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <a
+                  type="button"
+                  class="btn btn-danger"
+                  href="/deleteData?db={{db}}&table={{table}}&dest={{i}}"
+                  >DELETE</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

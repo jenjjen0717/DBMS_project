@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.body {
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+}
+.body .content {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.body .content .create_form {
+  width: 100%;
+}
+
+.btn {
+  text-align: center;
+}
+.btn i {
+  font-size: 1.25rem;
+}
+
+.deleteBtn:hover {
+  color: red;
+}
+
+.viewBtn:hover {
+  color: blue;
+}
+
+.create_table {
+  display: flex;
+  gap: 1rem;
+}
+.create_table .table_name {
+  flex: 1;
+}
+
+.import-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bxs-trash:hover {
+  color: red;
+}/*# sourceMappingURL=style.css.map */

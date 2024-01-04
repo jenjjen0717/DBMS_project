@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.body {
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+
+  .content {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .create_form {
+      width: 100%;
+    }
+  }
+}
+
+@import "./index";
+@import "./createTable";
+@import "./table";

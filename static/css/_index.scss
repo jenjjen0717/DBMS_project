@@ -1,0 +1,18 @@
+.btn {
+  text-align: center;
+  i {
+    font-size: 1.25rem;
+  }
+}
+
+.deleteBtn {
+  &:hover {
+    color: red;
+  }
+}
+
+.viewBtn {
+  &:hover {
+    color: blue;
+  }
+}

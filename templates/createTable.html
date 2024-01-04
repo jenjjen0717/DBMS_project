@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block title %} Create Table | {{db}}{% endblock %}
+{% block content %}
+<div class="body">
+  <div class="content">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index">Index</a></li>
+        <li class="breadcrumb-item">
+          <a href="/database?db={{db}}">{{db}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Create Table</li>
+      </ol>
+    </nav>
+    <h1>建立資料表 | {{db}}</h1>
+    <form class="create_table mb-2" action="" method="GET">
+      <div class="form-floating table_name">
+        <input type="text" name="db" value="{{db}}" style="display: none" />
+        <input
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          placeholder="table name"
+          value="{{t_name}}"
+          name="table_name"
+          required
+        />
+        <label for="floatingInput">建立新資料表</label>
+      </div>
+      <div class="form-floating table_column">
+        <input
+          type="number"
+          class="form-control"
+          id="floatingInput"
+          placeholder="column"
+          value="1"
+          name="table_column"
+          min="1"
+        />
+        <label for="floatingInput">欄位</label>
+      </div>
+      <input class="btn btn-primary" type="submit" value="執行" />
+    </form>
+
+    <form action="" method="POST">
+      {% if t_column:%} {% for i in range(t_column):%}
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon3">Column {{i + 1}}</span>
+        <input
+          type="text"
+          class="form-control"
+          id="column_{{i + 1}}"
+          name="column_headers"
+          aria-describedby="basic-addon3"
+        />
+      </div>
+      {% endfor %} {% endif %}
+      <div class="btn-group" aria-label="Basic example">
+        <a type="button" class="btn btn-danger" href="/database?db={{db}}"
+          >Cancel</a
+        >
+        <input type="submit" class="btn btn-outline-primary" value="Create" />
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
